@@ -4,7 +4,7 @@ from flask_restful import Api, Resource, reqparse
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-"""Modules importing"""
+"""This file contains the implementation of the entire_search API, which is used to search for specific keywords in Hadith books and the Quran."""
 
 
 app = Flask(__name__)
@@ -323,9 +323,11 @@ class Users(Resource):
                         data.append(res)
                     coun=coun+1
             #print(coun)
+        """Print the count of the matching Ayahs."""
 
 
             data=pd.DataFrame(data)
+        """Create a DataFrame of the extracted Quranic Ayahs."""
             data = data[(data.duplicated(subset = None,keep = 'first'))==False]
             if data.empty:
                 return {'message' : "There is no Quranic Surah and Ayah based on this keywords or we need to upgrade our engine"}, 200
@@ -371,4 +373,4 @@ class Users(Resource):
 api.add_resource(Users, '/')
 
 if __name__ == '__main__':
-    app.run()
+    """Start the Flask server."""
