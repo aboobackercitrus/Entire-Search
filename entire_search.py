@@ -4,6 +4,11 @@ from flask_restful import Api, Resource, reqparse
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+
+# Helper function to make requests and parse with BeautifulSoup
+def get_parsed_html(url):
+    response = requests.get(url)
+    return BeautifulSoup(response.content, 'html.parser') if response.status_code == 200 else None
 """Modules importing"""
 
 
@@ -47,7 +52,7 @@ class Users(Resource):
             parser3.add_argument('search_two_from_above_book', required=False)
             args3 = parser3.parse_args()
             key2=args3['search_two_from_above_book']
-            page = requests.get(f"https://sunnah.com/muslim/{x}")
+            page = requests.get("https://sunnah.com/muslim/{}".format(x))
             #page = requests.get("https://sunnah.com/muslim/1")
             soup = BeautifulSoup(page.content, "html.parser")
             hadees = soup.find_all('div',class_="english_hadith_full")
@@ -92,7 +97,7 @@ class Users(Resource):
         keyword=args['quran_subject_index_name']
         keyword=keyword.lower()
         let=keyword[0]
-        url=requests.get(f"https://www.alim.org/quran/subject-index/letter/{let}/")
+        url=requests.get("https://www.alim.org/quran/subject-index/letter/{}/".format(let))
         soup=BeautifulSoup(url.content, 'lxml')
         #print(soup)
         res=[]
@@ -116,7 +121,7 @@ class Users(Resource):
                     res.append(data)
             #print(res)
         for x in range(2,13):
-            url2=requests.get(f"https://www.alim.org/quran/subject-index/letter/{let}/page/{x}/")
+            url2=requests.get("https://www.alim.org/quran/subject-index/letter/{}/page/{}/".format(let, x))
             soup2=BeautifulSoup(url2.content, 'lxml')
             hadees = soup2.find_all('div',class_='row subject-row')
             for div in soup2.find_all("div", class_={"col-sm-10",'sub-subject-text'}): 
@@ -126,7 +131,6 @@ class Users(Resource):
                 #print(hadees_name1)
 
                 subject= re.findall(r'[A-Za-z , ( ) -]+', hadees_name1)
-                #print(subject)
                 subject[0]=subject[0].lower()
                 surath = re.findall(r"[-+]?\d*\.\d+|\d+", hadees_name1)
                 #print(surath)
@@ -145,7 +149,7 @@ class Users(Resource):
         #print(result)
         df = df.to_dict('records')
         if    result:
-            return {'message' : "Check Entered Subject Index Keyword"}, 200
+            return {'message' : "Keyword not found in Quran subject index"}, 404
         else:
             return  df, 200
 
@@ -168,7 +172,7 @@ class Users(Resource):
 
         count=0
         res=[]
-        page = requests.get(f"https://sunnah.com/muslim/{x}")
+        page = requests.get("https://sunnah.com/muslim/{}".format(x))
         soup = BeautifulSoup(page.content, "html.parser")
         hadees = soup.find_all('span',class_="arabic_text_details arabic")
         for hadee in hadees:
