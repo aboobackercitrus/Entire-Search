@@ -17,7 +17,10 @@ function handleUIInteractions() {
   const searchButton = document.getElementById('search-button');
 
   // Add an event listener to the search button
-  searchButton.addEventListener('click', () => {
+  searchButton.addEventListener('click', (event) => {
+  event.preventDefault();
+  const searchKeyword = searchInput.value;
+  fetchData(searchKeyword);
     // Get the search keyword from the input element
     const searchKeyword = searchInput.value;
 
