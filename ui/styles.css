@@ -1,0 +1,37 @@
+/* styles.css */
+
+/* Add CSS rules to style the UI elements */
+
+/* Style the search container */
+#search-container {
+  margin-bottom: 20px;
+}
+
+/* Style the search input */
+#search-input {
+  width: 200px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style the search button */
+#search-button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style the results container */
+#results-container {
+  margin-top: 20px;
+}
+
+/* Style the results list */
+#results-list {
+  list-style-type: none;
+  padding: 0;
+}
